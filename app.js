@@ -14,7 +14,7 @@ app.use(express.json());
 connectMongoDb(MONGO_URL);
 
 app.get("/get", (req, res) => {
-  res.status(200).json("Test Route");
+  res.status(200).json("Test Route for backend");
 });
 
 app.use("/article", articlesRoutes);
