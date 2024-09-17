@@ -6,7 +6,7 @@ const { connectMongoDb } = require("./config/db");
 const articlesRoutes = require("./routes/articleRoute");
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT;
 const MONGO_URL = process.env.MONGO_URL;
 
 app.use(cors());
