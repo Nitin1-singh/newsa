@@ -2,7 +2,7 @@ const { default: axios } = require("axios");
 const Vote = require("../models/article");
 
 async function getAllArticles(req, res) {
-  const sessionId = req.ip;
+  const { sessionId } = req.body;
   try {
     const response = await axios.get(`https://newsapi.org/v2/top-headlines`, {
       params: {
@@ -26,7 +26,6 @@ async function getAllArticles(req, res) {
       };
       const voteScore = voteRecord.votes.upvotes - voteRecord.votes.downvotes;
       const userVote = voteRecord.voters.find((v) => v.sessionId === sessionId);
-      // console.log(voteRecord, userVote);
       return {
         ...article,
         votes: voteRecord.votes,
@@ -43,8 +42,7 @@ async function getAllArticles(req, res) {
   }
 }
 async function voteArticle(req, res) {
-  const { url, voteType } = req.body;
-  const sessionId = req.ip;
+  const { url, voteType, sessionId } = req.body;
 
   try {
     let voteRecord = await Vote.findOne({ articleUrl: url });
@@ -102,8 +100,7 @@ async function voteArticle(req, res) {
   }
 }
 async function handelRedo(req, res) {
-  const { url, voteType } = req.body;
-  const sessionId = req.ip;
+  const { url, voteType, sessionId } = req.body;
 
   try {
     let voteRecord = await Vote.findOne({ articleUrl: url });
@@ -112,6 +109,7 @@ async function handelRedo(req, res) {
     );
     if (existingVote) {
       if (existingVote.voteType === voteType) {
+        // console.log(voteRecord, existingVote);
         voteRecord.votes[`${existingVote.voteType}s`]--;
         voteRecord.voters = voteRecord.voters.filter(
           (v) => v.sessionId !== sessionId

@@ -5,7 +5,7 @@ const {
   voteArticle,
   handelRedo,
 } = require("../controllers/articleController");
-router.get("/getArticle", getAllArticles);
+router.post("/getArticle", getAllArticles);
 router.post("/vote", voteArticle);
 router.post("/redoVote", handelRedo);
 
